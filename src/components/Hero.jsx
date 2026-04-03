@@ -1,6 +1,16 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
+function wmoIcon(code) {
+  if (code === 0) return '☀️'
+  if (code <= 3) return '⛅'
+  if (code <= 48) return '🌫️'
+  if (code <= 67) return '🌧️'
+  if (code <= 77) return '❄️'
+  if (code <= 82) return '🌦️'
+  return '⛈️'
+}
+
 const titles = [
   'Automation + AI Engineer',
   'Full Stack Developer',
@@ -12,6 +22,25 @@ export default function Hero() {
   const [titleIndex, setTitleIndex] = useState(0)
   const [displayed, setDisplayed] = useState('')
   const [deleting, setDeleting] = useState(false)
+  const [weather, setWeather] = useState(null)
+
+  useEffect(() => {
+    async function fetchWeather(lat, lon) {
+      const [meteo, geo] = await Promise.all([
+        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`).then(r => r.json()),
+        fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`).then(r => r.json()),
+      ])
+      const city = geo.city || geo.locality || geo.principalSubdivision || 'Your City'
+      const tempF = Math.round(meteo.current_weather.temperature * 9 / 5 + 32)
+      const icon = wmoIcon(meteo.current_weather.weathercode)
+      setWeather({ city, tempF, icon })
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      ({ coords }) => fetchWeather(coords.latitude, coords.longitude),
+      () => fetchWeather(38.9072, -77.0369), // fallback: Washington DC
+    )
+  }, [])
 
   useEffect(() => {
     const current = titles[titleIndex]
@@ -109,6 +138,19 @@ export default function Hero() {
               Contact Me
             </a>
           </motion.div>
+
+          {weather && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.0 }}
+              className="mt-6 flex justify-center md:justify-start"
+            >
+              <span className="font-mono text-xs text-muted border border-accent/20 rounded-full px-4 py-1.5 bg-accent/5">
+                {weather.icon} {weather.city} · {weather.tempF}°F
+              </span>
+            </motion.div>
+          )}
         </div>
 
         {/* Photo */}
@@ -126,7 +168,7 @@ export default function Hero() {
             <img
               src="/images/photo2.jpg"
               alt="Marcellous Curtis"
-              className="relative w-full h-full object-cover object-top rounded-full border-4 border-card"
+              className="relative w-full h-full object-cover rounded-full border-4 border-card" style={{ objectPosition: '50% 15%' }}
             />
           </div>
         </motion.div>
