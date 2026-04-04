@@ -3,6 +3,7 @@ import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Skills from './components/Skills'
 import GitHubStats from './components/GitHubStats'
+import NowCard from './components/NowCard'
 import Projects from './components/Projects'
 import HackerNews from './components/HackerNews'
 import SpotifyCard from './components/SpotifyCard'
@@ -35,7 +36,10 @@ export default function App() {
             </motion.div>
 
             <div className="grid grid-cols-1 lg:grid-cols-[1.6fr_1fr] gap-5">
-              <GitHubStats />
+              <div className="flex flex-col gap-5">
+                <GitHubStats />
+                <NowCard />
+              </div>
               <div className="flex flex-col gap-5">
                 <SpotifyCard />
                 <HackerNews />
