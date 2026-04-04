@@ -8,54 +8,27 @@
   }
 
   body {
-    background-color: #0a0a0f;
-    color: #ccd6f6;
+    background-color: #0c0c0e;
+    color: #f9fafb;
     font-family: 'Inter', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
   }
 
   ::selection {
-    background-color: #00f5d433;
-    color: #00f5d4;
+    background-color: #a78bfa33;
+    color: #a78bfa;
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #0a0a0f;
+    background: #0c0c0e;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #00f5d455;
-    border-radius: 3px;
-  }
-}
-
-@layer utilities {
-  .glow {
-    box-shadow: 0 0 20px #00f5d420, 0 0 40px #00f5d410;
-  }
-
-  .glow-text {
-    text-shadow: 0 0 20px #00f5d480;
-  }
-
-  .gradient-border {
-    position: relative;
-  }
-
-  .gradient-border::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: linear-gradient(135deg, #00f5d4, transparent, #00f5d420);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
+    background: #2a2a2d;
+    border-radius: 4px;
   }
 }

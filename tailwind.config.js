@@ -7,13 +7,14 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: '#0a0a0f',
-        surface: '#12121a',
-        card: '#1a1a2e',
-        accent: '#00f5d4',
-        'accent-dim': '#00c4aa',
-        muted: '#8892b0',
-        light: '#ccd6f6',
+        bg: '#0c0c0e',
+        surface: '#141416',
+        card: '#1c1c1f',
+        accent: '#a78bfa',
+        'accent-dim': '#8b5cf6',
+        muted: '#6b7280',
+        light: '#f9fafb',
+        border: '#2a2a2d',
       },
       fontFamily: {
         mono: ['JetBrains Mono', 'Fira Code', 'monospace'],

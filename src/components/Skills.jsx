@@ -36,26 +36,25 @@ const skills = [
 function SkillBar({ name, icon, level, delay }) {
   return (
     <motion.div
-      initial={{ opacity: 0, x: -20 }}
+      initial={{ opacity: 0, x: -8 }}
       whileInView={{ opacity: 1, x: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5, delay }}
-      className="group"
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ duration: 0.5, delay, ease: 'easeOut' }}
     >
       <div className="flex items-center justify-between mb-1.5">
-        <span className="flex items-center gap-2 text-sm font-mono text-light">
+        <span className="flex items-center gap-2 text-sm text-light">
           <span>{icon}</span>
           {name}
         </span>
-        <span className="text-xs font-mono text-muted">{level}%</span>
+        <span className="text-xs text-muted">{level}%</span>
       </div>
-      <div className="h-1.5 bg-surface rounded-full overflow-hidden">
+      <div className="h-1 bg-white/5 rounded-full overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${level}%` }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: delay + 0.2, ease: 'easeOut' }}
-          className="h-full bg-gradient-to-r from-accent to-accent-dim rounded-full"
+          className="h-full bg-accent rounded-full"
         />
       </div>
     </motion.div>
@@ -67,27 +66,27 @@ export default function Skills() {
     <section id="skills" className="py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 12 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          viewport={{ once: true, margin: '-80px' }}
+          transition={{ duration: 0.6, ease: 'easeOut' }}
           className="text-center mb-16"
         >
-          <p className="font-mono text-accent text-sm tracking-widest uppercase mb-3">What I work with</p>
+          <p className="text-xs font-medium text-accent uppercase tracking-wider mb-3">What I work with</p>
           <h2 className="text-4xl md:text-5xl font-bold text-light">Skills & Tech Stack</h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-6">
           {skills.map((group, gi) => (
             <motion.div
               key={group.category}
-              initial={{ opacity: 0, y: 40 }}
+              initial={{ opacity: 0, y: 12 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: gi * 0.15 }}
-              className="bg-card rounded-xl p-6 gradient-border hover:glow transition-all duration-300"
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6, delay: gi * 0.1, ease: 'easeOut' }}
+              className="bg-card border border-white/5 rounded-2xl p-6 hover:border-white/10 transition-colors duration-300"
             >
-              <h3 className="font-mono text-accent text-sm font-medium tracking-widest uppercase mb-6">
+              <h3 className="text-xs font-semibold text-muted uppercase tracking-wider mb-6">
                 {group.category}
               </h3>
               <div className="space-y-5">
