@@ -18,6 +18,12 @@ const titles = [
   'LLM Systems Builder',
 ]
 
+const stats = [
+  { value: '3,000+', label: 'hours saved annually' },
+  { value: '3 yrs', label: 'public sector consulting' },
+  { value: '10+', label: 'automations shipped' },
+]
+
 export default function Hero() {
   const [titleIndex, setTitleIndex] = useState(0)
   const [displayed, setDisplayed] = useState('')
@@ -35,7 +41,6 @@ export default function Hero() {
       const icon = wmoIcon(meteo.current_weather.weathercode)
       setWeather({ city, tempF, icon })
     }
-
     navigator.geolocation.getCurrentPosition(
       ({ coords }) => fetchWeather(coords.latitude, coords.longitude),
       () => fetchWeather(38.9072, -77.0369),
@@ -45,7 +50,6 @@ export default function Hero() {
   useEffect(() => {
     const current = titles[titleIndex]
     let timeout
-
     if (!deleting && displayed.length < current.length) {
       timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80)
     } else if (!deleting && displayed.length === current.length) {
@@ -56,129 +60,149 @@ export default function Hero() {
       setDeleting(false)
       setTitleIndex((i) => (i + 1) % titles.length)
     }
-
     return () => clearTimeout(timeout)
   }, [displayed, deleting, titleIndex])
 
   return (
-    <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden px-6">
-      {/* Subtle radial gradient background */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        background: 'radial-gradient(ellipse 80% 50% at 50% -10%, rgba(167,139,250,0.08) 0%, transparent 60%)',
-      }} />
+    <section id="hero" className="min-h-screen flex flex-col justify-center relative overflow-hidden px-6 md:px-10 pt-24 pb-16">
+      {/* Background accent blob */}
+      <div
+        className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(200,255,0,0.04) 0%, transparent 65%)' }}
+      />
 
-      <div className="max-w-6xl mx-auto relative z-10 flex flex-col-reverse md:flex-row items-center gap-12 md:gap-20">
-        {/* Text */}
-        <div className="flex-1 text-center md:text-left">
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-sm font-medium text-muted mb-4"
-          >
-            Hi, I&apos;m
-          </motion.p>
-
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.35 }}
-            className="text-5xl md:text-6xl font-bold text-light mb-5 tracking-tight"
-          >
-            Marcellous Curtis
-          </motion.h1>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="h-9 flex items-center md:justify-start justify-center mb-6"
-          >
-            <span className="text-xl md:text-2xl text-accent font-medium">
-              {displayed}
-              <span className="inline-block w-0.5 h-6 bg-accent ml-0.5 align-middle animate-pulse" />
-            </span>
-          </motion.div>
-
-          <motion.p
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.65 }}
-            className="text-muted text-lg max-w-xl mb-10 leading-relaxed"
-          >
-            Automation and AI Engineer with 3 years of Public Sector consulting experience.
-            I leverage LLMs and RPA to eliminate manual work — reducing over 3,000+ hours annually.
-            Desire to build software that improves the human experience.
-          </motion.p>
-
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-3 justify-center md:justify-start"
-          >
-            <a
-              href="#projects"
-              className="px-7 py-2.5 bg-accent text-bg font-semibold rounded-lg hover:bg-accent-dim transition-colors duration-200 text-sm"
-            >
-              View My Work
-            </a>
-            <a
-              href="#contact"
-              className="px-7 py-2.5 border border-white/10 text-light rounded-lg hover:border-white/20 hover:bg-white/5 transition-all duration-200 text-sm"
-            >
-              Contact Me
-            </a>
-          </motion.div>
-
+      <div className="max-w-7xl mx-auto w-full">
+        {/* Top row: availability badge + weather */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="flex items-center justify-between mb-16 md:mb-20"
+        >
+          <div className="flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+            <span className="text-xs text-muted-light">Available for new projects</span>
+          </div>
           {weather && (
+            <span className="text-xs text-muted">
+              {weather.icon} {weather.city} · {weather.tempF}°F
+            </span>
+          )}
+        </motion.div>
+
+        {/* Main hero grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-10 lg:gap-16 items-end">
+          {/* Left: text */}
+          <div>
+            {/* Display name */}
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="text-display font-black text-light mb-6"
+            >
+              Marcellous<br />
+              <span className="text-accent">Curtis</span>
+            </motion.h1>
+
+            {/* Typewriter role */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.7 }}
+              className="flex items-center gap-3 mb-8"
+            >
+              <span className="w-8 h-px bg-border" />
+              <span className="text-sm text-muted-light font-mono">
+                {displayed}
+                <span className="inline-block w-px h-3.5 bg-accent ml-0.5 align-middle animate-pulse" />
+              </span>
+            </motion.div>
+
+            {/* Bio */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.85 }}
+              className="text-muted text-base leading-relaxed max-w-lg mb-10"
+            >
+              Automation and AI Engineer with 3 years of Public Sector consulting experience.
+              I leverage LLMs and RPA to eliminate manual work and build software that improves the human experience.
+            </motion.p>
+
+            {/* CTAs */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.0 }}
-              className="mt-6 flex justify-center md:justify-start"
+              className="flex flex-wrap gap-3"
             >
-              <span className="text-xs text-muted border border-white/8 rounded-full px-4 py-1.5 bg-white/3">
-                {weather.icon} {weather.city} · {weather.tempF}°F
-              </span>
+              <a
+                href="#projects"
+                className="px-6 py-2.5 bg-accent text-bg text-sm font-bold rounded-full hover:bg-accent-dim transition-colors duration-200"
+              >
+                View Work
+              </a>
+              <a
+                href="#contact"
+                className="px-6 py-2.5 border border-border text-muted-light text-sm rounded-full hover:border-muted hover:text-light transition-all duration-200"
+              >
+                Get in Touch
+              </a>
             </motion.div>
-          )}
+          </div>
+
+          {/* Right: photo */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="flex-shrink-0 mx-auto lg:mx-0"
+          >
+            <div className="relative w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
+              <div
+                className="absolute inset-0 rounded-3xl"
+                style={{ background: 'linear-gradient(135deg, rgba(200,255,0,0.15) 0%, transparent 60%)' }}
+              />
+              <img
+                src="/images/photo2.jpg"
+                alt="Marcellous Curtis"
+                className="w-full h-full object-cover rounded-3xl border border-border"
+                style={{ objectPosition: '50% 15%' }}
+              />
+            </div>
+          </motion.div>
         </div>
 
-        {/* Photo */}
+        {/* Stats row */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.4, duration: 0.6 }}
-          className="flex-shrink-0"
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.1 }}
+          className="mt-16 pt-8 border-t border-border grid grid-cols-3 gap-6 max-w-xl"
         >
-          <div className="relative w-60 h-60 md:w-72 md:h-72">
-            <div className="absolute inset-0 rounded-full" style={{
-              background: 'radial-gradient(circle, rgba(167,139,250,0.15) 0%, transparent 70%)',
-            }} />
-            <img
-              src="/images/photo2.jpg"
-              alt="Marcellous Curtis"
-              className="relative w-full h-full object-cover rounded-full border border-white/10"
-              style={{ objectPosition: '50% 15%' }}
-            />
-          </div>
+          {stats.map((s) => (
+            <div key={s.label}>
+              <p className="text-xl font-bold text-light">{s.value}</p>
+              <p className="text-xs text-muted mt-0.5">{s.label}</p>
+            </div>
+          ))}
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* Scroll hint */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2"
+        transition={{ delay: 1.4 }}
+        className="absolute bottom-8 right-10 hidden md:flex flex-col items-center gap-2"
       >
-        <span className="text-xs text-muted tracking-widest">scroll</span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 1.5 }}
-          className="w-px h-8 bg-gradient-to-b from-muted to-transparent"
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 2 }}
+          className="w-px h-10 bg-gradient-to-b from-transparent via-border to-transparent"
         />
+        <span className="text-[10px] text-muted tracking-widest rotate-90 origin-center mt-2">SCROLL</span>
       </motion.div>
     </section>
   )

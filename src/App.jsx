@@ -7,6 +7,7 @@ import StoicQuote from './components/StoicQuote'
 import Projects from './components/Projects'
 import HackerNews from './components/HackerNews'
 import SpotifyCard from './components/SpotifyCard'
+import StravaCard from './components/StravaCard'
 import PhilosophyTerminal from './components/PhilosophyTerminal'
 import Timeline from './components/Timeline'
 import Contact from './components/Contact'
@@ -44,6 +45,9 @@ export default function App() {
                 <SpotifyCard />
                 <HackerNews />
               </div>
+            </div>
+            <div className="mt-5">
+              <StravaCard />
             </div>
           </div>
         </section>
