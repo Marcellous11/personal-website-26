@@ -50,6 +50,8 @@ export default {
         return Response.json({ error: 'Athlete fetch failed', detail: athlete }, { status: 401, headers: corsHeaders })
       }
 
+      const activitiesError = Array.isArray(activities) ? null : activities
+
       // Fetch stats using athlete id from profile
       const statsRes = await fetch(
         `https://www.strava.com/api/v3/athletes/${athlete.id}/stats`,
@@ -59,6 +61,7 @@ export default {
 
       return Response.json({
         athlete: {
+          id: athlete.id,
           name: `${athlete.firstname} ${athlete.lastname}`,
           username: athlete.username,
           city: athlete.city,
@@ -116,6 +119,7 @@ export default {
             distance: stats.all_swim_totals?.distance ?? 0,
           },
         },
+        activitiesError,
         recentActivities: Array.isArray(activities) ? activities.slice(0, 6).map(a => ({
           id: a.id,
           name: a.name,

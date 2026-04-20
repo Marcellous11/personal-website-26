@@ -45,7 +45,7 @@ export default function Contact() {
           transition={{ duration: 0.5 }}
           className="flex items-center gap-5 mb-16"
         >
-          <span className="font-mono text-[11px] text-muted">05</span>
+          <span className="font-mono text-[11px] text-muted">06</span>
           <span className="flex-1 h-px bg-border" />
           <h2 className="text-xs font-medium text-muted uppercase tracking-widest">Contact</h2>
         </motion.div>

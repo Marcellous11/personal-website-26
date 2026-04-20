@@ -1,28 +1,30 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
+import { Card, CardInner } from '@/components/ui/card'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { AnimatedNumber } from '@/components/ui/stat'
+import ActivityStrip from '@/components/strava/ActivityStrip'
+import SportMixChart from '@/components/strava/SportMixChart'
+import { cn } from '@/lib/utils'
 
 const WORKER_URL = 'https://strava-stats.1mcj001.workers.dev'
 
 // ── Formatters ──────────────────────────────────────────────────────────────
 
-function fmtKm(meters) {
-  return (meters / 1000).toFixed(2)
-}
-
-function fmtKmShort(meters) {
-  return (meters / 1000).toFixed(0)
-}
+const metersToMiles = m => m / 1609.34
+const metersToYards = m => m * 1.09361
+const metersToFeet  = m => m * 3.28084
 
 function fmtPace(speedMps) {
   if (!speedMps || speedMps === 0) return '—'
-  const secPerKm = 1000 / speedMps
-  const m = Math.floor(secPerKm / 60)
-  const s = Math.round(secPerKm % 60)
+  const secPerMile = 1609.34 / speedMps
+  const m = Math.floor(secPerMile / 60)
+  const s = Math.round(secPerMile % 60)
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 
 function fmtSpeed(speedMps) {
-  return (speedMps * 3.6).toFixed(1)
+  return (speedMps * 2.23694).toFixed(1)
 }
 
 function fmtTime(seconds) {
@@ -52,7 +54,7 @@ function relDate(dateStr) {
   return fmtDate(dateStr)
 }
 
-// ── Activity icons (inline SVG) ─────────────────────────────────────────────
+// ── Activity icons ──────────────────────────────────────────────────────────
 
 function RunIcon({ className = '' }) {
   return (
@@ -141,10 +143,30 @@ function activityBg(type) {
 // ── Skeleton ────────────────────────────────────────────────────────────────
 
 function Skeleton({ className = '' }) {
-  return <div className={`bg-border/40 rounded-lg animate-pulse ${className}`} />
+  return <div className={cn('bg-border/40 rounded-lg animate-pulse', className)} />
 }
 
-// ── Main component ───────────────────────────────────────────────────────────
+// ── Streak helper ───────────────────────────────────────────────────────────
+
+function activeStreak(activities = []) {
+  if (!activities.length) return 0
+  const days = new Set(activities.map(a => a.startDate?.slice(0, 10)))
+  let streak = 0
+  const cursor = new Date()
+  cursor.setHours(0, 0, 0, 0)
+  for (let i = 0; i < 365; i++) {
+    const key = cursor.toISOString().slice(0, 10)
+    if (days.has(key)) {
+      streak++
+    } else if (i > 0) {
+      break
+    }
+    cursor.setDate(cursor.getDate() - 1)
+  }
+  return streak
+}
+
+// ── Main component ──────────────────────────────────────────────────────────
 
 export default function StravaCard() {
   const [data, setData] = useState(null)
@@ -164,7 +186,17 @@ export default function StravaCard() {
   const recent = tab === 'run' ? data?.recentTotals?.runs : tab === 'ride' ? data?.recentTotals?.rides : data?.recentTotals?.swims
   const allT   = tab === 'run' ? data?.allTime?.runs : tab === 'ride' ? data?.allTime?.rides : data?.allTime?.swims
 
-  const isRun  = latest?.type === 'Run'
+  const isRun   = latest?.type === 'Run'
+  const isSwim  = latest?.type === 'Swim'
+  const streak  = activeStreak(data?.recentActivities)
+
+  const heroValue   = latest ? (isSwim ? metersToYards(latest.distance) : metersToMiles(latest.distance)) : 0
+  const heroUnit    = isSwim ? 'yd' : 'mi'
+  const heroDecimal = isSwim ? 0 : 2
+
+  const ytdValue   = tab === 'swim' ? metersToYards(ytd?.distance ?? 0) : metersToMiles(ytd?.distance ?? 0)
+  const ytdUnit    = tab === 'swim' ? 'yd' : 'mi'
+  const ytdDecimal = tab === 'swim' ? 0 : 0
 
   return (
     <motion.div
@@ -172,8 +204,8 @@ export default function StravaCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6"
     >
+    <Card className="p-6">
       {/* ── Header ── */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2.5">
@@ -184,10 +216,15 @@ export default function StravaCard() {
           {data?.athlete?.city && (
             <span className="font-mono text-[10px] text-muted">· {data.athlete.city}</span>
           )}
+          {streak > 0 && (
+            <span className="ml-1 font-mono text-[9px] text-[#FC4C02] bg-[#FC4C02]/10 rounded px-1.5 py-0.5 uppercase tracking-wider">
+              {streak}d streak
+            </span>
+          )}
         </div>
         {data?.athlete?.name && (
           <a
-            href={`https://www.strava.com/athletes/${data.athlete.username}`}
+            href={`https://www.strava.com/athletes/${data.athlete.id ?? data.athlete.username}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-xs text-accent hover:text-accent-dim transition-colors duration-200"
@@ -200,9 +237,9 @@ export default function StravaCard() {
       {/* ── Body ── */}
       {loading ? (
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <Skeleton className="h-52" />
-          <Skeleton className="h-52" />
-          <Skeleton className="h-52" />
+          <Skeleton className="h-72" />
+          <Skeleton className="h-72" />
+          <Skeleton className="h-72" />
         </div>
       ) : !data || data.error ? (
         <p className="text-xs text-muted">Could not load Strava data.</p>
@@ -210,28 +247,30 @@ export default function StravaCard() {
         <div className="grid grid-cols-1 lg:grid-cols-[1.25fr_1fr_1fr] gap-5">
 
           {/* ── Col 1: Latest Activity ── */}
-          <div className="bg-surface border border-border rounded-xl p-4 flex flex-col">
+          <CardInner className="p-4 flex flex-col">
             <div className="flex items-start justify-between mb-3">
               <div>
                 <p className="font-mono text-[9px] text-muted uppercase tracking-widest mb-1">Latest Activity</p>
                 <p className="text-sm font-semibold text-light leading-snug">{latest?.name ?? '—'}</p>
                 <p className="text-[10px] text-muted mt-0.5">{latest ? relDate(latest.startDate) : ''}</p>
               </div>
-              <div className={`p-2 rounded-lg ${activityBg(latest?.type)}`}>
-                <ActivityIcon type={latest?.type} className={`w-5 h-5 ${activityColor(latest?.type)}`} />
+              <div className={cn('p-2 rounded-lg', activityBg(latest?.type))}>
+                <ActivityIcon type={latest?.type} className={cn('w-5 h-5', activityColor(latest?.type))} />
               </div>
             </div>
 
             {/* Big distance */}
             <div className="my-3 flex items-end gap-1.5">
               <span className="text-[2.4rem] font-bold text-light leading-none tracking-tight">
-                {latest ? fmtKm(latest.distance) : '—'}
+                {latest ? (
+                  <AnimatedNumber value={heroValue} decimals={heroDecimal} />
+                ) : '—'}
               </span>
-              <span className="text-sm text-muted mb-1">km</span>
+              <span className="text-sm text-muted mb-1">{heroUnit}</span>
             </div>
 
             {/* Stats 2×2 */}
-            <div className="grid grid-cols-2 gap-2 flex-1">
+            <div className="grid grid-cols-2 gap-2">
               {[
                 {
                   label: 'Time',
@@ -241,13 +280,13 @@ export default function StravaCard() {
                   label: isRun ? 'Avg Pace' : 'Avg Speed',
                   value: latest
                     ? isRun
-                      ? `${fmtPace(latest.averageSpeed)} /km`
-                      : `${fmtSpeed(latest.averageSpeed)} km/h`
+                      ? `${fmtPace(latest.averageSpeed)} /mi`
+                      : `${fmtSpeed(latest.averageSpeed)} mph`
                     : '—',
                 },
                 {
                   label: 'Elevation',
-                  value: latest ? `${Math.round(latest.totalElevationGain)} m` : '—',
+                  value: latest ? `${Math.round(metersToFeet(latest.totalElevationGain))} ft` : '—',
                 },
                 {
                   label: 'Heart Rate',
@@ -256,76 +295,63 @@ export default function StravaCard() {
                     : '—',
                 },
               ].map(({ label, value }) => (
-                <div key={label} className="bg-bg rounded-lg p-2.5">
+                <div key={label} className="bg-bg rounded-lg p-3 flex flex-col justify-center relative overflow-hidden">
+                  <div className={cn('absolute left-0 top-0 bottom-0 w-[2px] opacity-60 bg-current', activityColor(latest?.type))} />
                   <p className="font-mono text-[8px] text-muted uppercase tracking-widest">{label}</p>
-                  <p className="text-[11px] font-semibold text-light mt-1 leading-none">{value}</p>
+                  <p className="text-base font-bold text-light mt-1 leading-none tracking-tight">{value}</p>
                 </div>
               ))}
             </div>
 
-            {/* Footer row */}
-            <div className="flex items-center justify-between mt-3 pt-3 border-t border-border">
-              <div className="flex items-center gap-3">
-                {(latest?.kudosCount ?? 0) > 0 && (
-                  <span className="text-[10px] text-muted flex items-center gap-1">
-                    <span className="text-[11px]">👊</span> {latest.kudosCount}
-                  </span>
-                )}
-                {(latest?.achievementCount ?? 0) > 0 && (
-                  <span className="text-[10px] text-muted flex items-center gap-1">
-                    <span className="text-[11px]">🏅</span> {latest.achievementCount}
-                  </span>
-                )}
-                {latest?.calories > 0 && (
-                  <span className="text-[10px] text-muted">{Math.round(latest.calories)} kcal</span>
-                )}
-              </div>
-              {latest?.sufferScore > 0 && (
-                <span className="font-mono text-[9px] text-muted">
-                  suffer <span className="text-[#FC4C02] font-semibold">{latest.sufferScore}</span>
-                </span>
-              )}
+            {/* 14-day activity strip */}
+            <div className="mt-4 pt-4 border-t border-border">
+              <ActivityStrip activities={data?.recentActivities ?? []} />
             </div>
-          </div>
+          </CardInner>
 
           {/* ── Col 2: Stats ── */}
-          <div className="bg-surface border border-border rounded-xl p-4 flex flex-col">
+          <CardInner className="p-4 flex flex-col">
             {/* Tab toggle */}
             <div className="flex items-center justify-between mb-5">
               <p className="font-mono text-[9px] text-muted uppercase tracking-widest">Stats</p>
-              <div className="flex rounded-lg overflow-hidden border border-border">
-                {['run', 'ride', 'swim'].map(t => (
-                  <button
-                    key={t}
-                    onClick={() => setTab(t)}
-                    className={`font-mono text-[9px] px-2.5 py-1 transition-colors duration-150 ${
-                      tab === t ? 'bg-accent text-bg' : 'text-muted hover:text-light'
-                    }`}
-                  >
-                    {t}
-                  </button>
-                ))}
-              </div>
+              <Tabs value={tab} onValueChange={setTab}>
+                <TabsList>
+                  {['run', 'ride', 'swim'].map(t => (
+                    <TabsTrigger key={t} value={t}>{t}</TabsTrigger>
+                  ))}
+                </TabsList>
+              </Tabs>
             </div>
 
             {/* YTD block */}
             <div className="mb-4">
-              <p className="font-mono text-[8px] text-muted uppercase tracking-widest mb-3">Year to Date</p>
-              <div className="space-y-2.5">
-                {[
-                  { label: 'Distance',   value: `${fmtKmShort(ytd?.distance ?? 0)} km`,           sub: `${ytd?.count ?? 0} activities` },
-                  { label: 'Time',       value: fmtTimeLong(ytd?.movingTime ?? 0),                 sub: null },
-                  { label: 'Elevation',  value: `${Math.round(ytd?.elevationGain ?? 0).toLocaleString()} m`, sub: null },
-                ].map(({ label, value, sub }) => (
-                  <div key={label} className="flex items-center justify-between">
-                    <span className="text-[10px] text-muted">{label}</span>
-                    <div className="text-right">
-                      <span className="text-xs font-semibold text-light">{value}</span>
-                      {sub && <p className="font-mono text-[8px] text-muted mt-0.5">{sub}</p>}
-                    </div>
-                  </div>
-                ))}
+              <div className="flex items-end justify-between mb-1">
+                <p className="font-mono text-[8px] text-muted uppercase tracking-widest">Year to Date</p>
+                <p className="font-mono text-[8px] text-muted">{ytd?.count ?? 0} activities</p>
               </div>
+              <div className="flex items-end gap-1.5 mt-1">
+                <span className="text-2xl font-bold text-light leading-none tracking-tight">
+                  <AnimatedNumber value={ytdValue} decimals={ytdDecimal} />
+                </span>
+                <span className="text-xs text-muted mb-0.5">{ytdUnit}</span>
+              </div>
+              <div className="grid grid-cols-2 gap-2 mt-3">
+                <div className="bg-bg rounded-lg p-2">
+                  <p className="font-mono text-[8px] text-muted uppercase tracking-widest">Time</p>
+                  <p className="text-xs font-semibold text-light mt-1">{fmtTimeLong(ytd?.movingTime ?? 0)}</p>
+                </div>
+                <div className="bg-bg rounded-lg p-2">
+                  <p className="font-mono text-[8px] text-muted uppercase tracking-widest">Elevation</p>
+                  <p className="text-xs font-semibold text-light mt-1">
+                    <AnimatedNumber value={metersToFeet(ytd?.elevationGain ?? 0)} /> ft
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Sport mix chart */}
+            <div className="mt-1 mb-4">
+              <SportMixChart ytd={data?.ytd} />
             </div>
 
             <div className="h-px bg-border my-1" />
@@ -335,9 +361,9 @@ export default function StravaCard() {
               <p className="font-mono text-[8px] text-muted uppercase tracking-widest mb-3">Last 4 Weeks</p>
               <div className="grid grid-cols-3 gap-2">
                 {[
-                  { label: 'runs',   value: recent?.count ?? 0 },
-                  { label: 'km',     value: fmtKm(recent?.distance ?? 0) },
-                  { label: 'time',   value: fmtTime(recent?.movingTime ?? 0) },
+                  { label: tab === 'swim' ? 'swims' : tab === 'ride' ? 'rides' : 'runs', value: recent?.count ?? 0 },
+                  { label: tab === 'swim' ? 'yd' : 'mi', value: tab === 'swim' ? Math.round(metersToYards(recent?.distance ?? 0)) : metersToMiles(recent?.distance ?? 0).toFixed(2) },
+                  { label: 'time', value: fmtTime(recent?.movingTime ?? 0) },
                 ].map(({ label, value }) => (
                   <div key={label} className="bg-bg rounded-lg p-2 text-center">
                     <p className="text-xs font-bold text-light">{value}</p>
@@ -354,17 +380,23 @@ export default function StravaCard() {
               <p className="font-mono text-[8px] text-muted uppercase tracking-widest mb-3">All Time</p>
               <div className="flex items-center justify-between">
                 <span className="text-[10px] text-muted">Activities</span>
-                <span className="text-xs font-semibold text-light">{(allT?.count ?? 0).toLocaleString()}</span>
+                <span className="text-xs font-semibold text-light">
+                  <AnimatedNumber value={allT?.count ?? 0} />
+                </span>
               </div>
               <div className="flex items-center justify-between mt-2">
                 <span className="text-[10px] text-muted">Distance</span>
-                <span className="text-xs font-semibold text-light">{fmtKmShort(allT?.distance ?? 0).toLocaleString()} km</span>
+                <span className="text-xs font-semibold text-light">
+                  {tab === 'swim'
+                    ? <><AnimatedNumber value={metersToYards(allT?.distance ?? 0)} /> yd</>
+                    : <><AnimatedNumber value={metersToMiles(allT?.distance ?? 0)} /> mi</>}
+                </span>
               </div>
             </div>
-          </div>
+          </CardInner>
 
           {/* ── Col 3: Recent Activities ── */}
-          <div className="bg-surface border border-border rounded-xl p-4 flex flex-col">
+          <CardInner className="p-4 flex flex-col">
             <p className="font-mono text-[9px] text-muted uppercase tracking-widest mb-4">Recent Activities</p>
 
             <div className="flex flex-col gap-1 flex-1">
@@ -377,39 +409,37 @@ export default function StravaCard() {
                     initial={{ opacity: 0, x: 6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04, duration: 0.3 }}
-                    className="flex items-center gap-3 py-2 border-b border-border/50 last:border-0 group"
+                    className="flex items-center gap-3 py-2 border-b border-border/50 last:border-0 group hover:bg-bg/60 rounded-md px-2 -mx-2 transition-colors"
                   >
-                    {/* Icon */}
-                    <div className={`p-1.5 rounded-lg shrink-0 ${activityBg(act.type)}`}>
-                      <ActivityIcon type={act.type} className={`w-3.5 h-3.5 ${activityColor(act.type)}`} />
+                    <div className={cn('p-1.5 rounded-lg shrink-0', activityBg(act.type))}>
+                      <ActivityIcon type={act.type} className={cn('w-3.5 h-3.5', activityColor(act.type))} />
                     </div>
 
-                    {/* Info */}
                     <div className="flex-1 min-w-0">
                       <p className="text-[11px] font-medium text-light truncate leading-tight">{act.name}</p>
                       <p className="font-mono text-[9px] text-muted mt-0.5 flex items-center gap-1.5">
-                        <span>{fmtKm(act.distance)} km</span>
+                        <span>{act.type === 'Swim' ? `${Math.round(metersToYards(act.distance))} yd` : `${metersToMiles(act.distance).toFixed(2)} mi`}</span>
                         <span className="text-border">·</span>
                         <span>{fmtTime(act.movingTime)}</span>
                         {act.totalElevationGain > 0 && (
                           <>
                             <span className="text-border">·</span>
-                            <span>↑{Math.round(act.totalElevationGain)}m</span>
+                            <span>↑{Math.round(metersToFeet(act.totalElevationGain))}ft</span>
                           </>
                         )}
                       </p>
                     </div>
 
-                    {/* Date */}
                     <span className="font-mono text-[9px] text-muted shrink-0">{relDate(act.startDate)}</span>
                   </motion.div>
                 ))
               )}
             </div>
-          </div>
+          </CardInner>
 
         </div>
       )}
+    </Card>
     </motion.div>
   )
 }

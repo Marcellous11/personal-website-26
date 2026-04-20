@@ -5,6 +5,7 @@ import Skills from './components/Skills'
 import GitHubStats from './components/GitHubStats'
 import StoicQuote from './components/StoicQuote'
 import Projects from './components/Projects'
+import Experience from './components/Experience'
 import HackerNews from './components/HackerNews'
 import SpotifyCard from './components/SpotifyCard'
 import StravaCard from './components/StravaCard'
@@ -20,6 +21,7 @@ export default function App() {
         <Hero />
         <Skills />
         <Projects />
+        <Experience />
 
         {/* Live section — bento grid */}
         <section className="px-6 md:px-10 py-24">
@@ -31,7 +33,7 @@ export default function App() {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-5 mb-10"
             >
-              <span className="font-mono text-[11px] text-muted">03</span>
+              <span className="font-mono text-[11px] text-muted">04</span>
               <span className="flex-1 h-px bg-border" />
               <h2 className="text-xs font-medium text-muted uppercase tracking-widest">Live</h2>
             </motion.div>
@@ -62,7 +64,7 @@ export default function App() {
               transition={{ duration: 0.5 }}
               className="flex items-center gap-5 mb-10"
             >
-              <span className="font-mono text-[11px] text-muted">04</span>
+              <span className="font-mono text-[11px] text-muted">05</span>
               <span className="flex-1 h-px bg-border" />
               <h2 className="text-xs font-medium text-muted uppercase tracking-widest">Mind & Journey</h2>
             </motion.div>
