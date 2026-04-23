@@ -20,7 +20,6 @@ export default function SpotifyCard() {
       }
     }
     load()
-    // Refresh every 30s
     const interval = setInterval(load, 30000)
     return () => clearInterval(interval)
   }, [])
@@ -31,29 +30,29 @@ export default function SpotifyCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6 flex flex-col justify-between"
+      className="bg-surface border border-ink rounded-atelier-card p-6 flex flex-col justify-between"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-2">
-          {/* Spotify logo */}
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-[#1DB954]">
+          {/* Spotify logo (ink, no brand green — brand color stays on the dot) */}
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" className="text-ink">
             <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z" />
           </svg>
-          <span className="text-xs font-medium text-light">
+          <span className="text-xs font-semibold text-ink">
             {track?.isPlaying ? 'Now Playing' : 'Last Played'}
           </span>
         </div>
         {track?.isPlaying && (
-          <div className="flex items-end gap-[3px] h-4">
-            {[1, 2, 3].map((i) => (
-              <motion.span
-                key={i}
-                className="w-[3px] bg-[#1DB954] rounded-full"
-                animate={{ height: ['4px', '14px', '4px'] }}
-                transition={{ repeat: Infinity, duration: 0.8, delay: i * 0.15, ease: 'easeInOut' }}
-              />
-            ))}
+          // Settled "live" indicator — 2s stroke oscillation, max amplitude
+          // permitted by spec §Motion don'ts (0.8pt ↔ 1.2pt). Single bar.
+          <div className="flex items-center gap-2">
+            <motion.span
+              className="block w-1.5 rounded-atelier-sm bg-accent-warm"
+              animate={{ height: ['8px', '12px', '8px'] }}
+              transition={{ repeat: Infinity, duration: 2, ease: 'easeInOut' }}
+            />
+            <span className="text-[10px] text-muted font-mono uppercase tracking-widest">live</span>
           </div>
         )}
       </div>
@@ -61,10 +60,10 @@ export default function SpotifyCard() {
       {/* Track info */}
       {loading ? (
         <div className="flex gap-4 items-center">
-          <div className="w-14 h-14 rounded-lg bg-border animate-pulse shrink-0" />
+          <div className="w-14 h-14 rounded-atelier-md bg-card border border-ink shrink-0" />
           <div className="flex-1 space-y-2">
-            <div className="h-3 bg-border rounded animate-pulse w-3/4" />
-            <div className="h-3 bg-border rounded animate-pulse w-1/2" />
+            <div className="h-3 bg-card border border-ink w-3/4" />
+            <div className="h-3 bg-card border border-ink w-1/2" />
           </div>
         </div>
       ) : track?.title ? (
@@ -78,15 +77,15 @@ export default function SpotifyCard() {
             <img
               src={track.albumArt}
               alt={track.album}
-              className="w-14 h-14 rounded-lg object-cover shrink-0 border border-border"
+              className="w-14 h-14 rounded-atelier-md object-cover shrink-0 border border-ink"
             />
           )}
           <div className="min-w-0">
-            <p className="text-sm font-semibold text-light truncate group-hover:text-accent transition-colors duration-200">
+            <p className="text-sm font-semibold text-ink truncate group-hover:text-accent transition-colors duration-200">
               {track.title}
             </p>
             <p className="text-xs text-muted truncate mt-0.5">{track.artist}</p>
-            <p className="text-xs text-muted/60 truncate mt-0.5">{track.album}</p>
+            <p className="text-xs text-muted truncate mt-0.5">{track.album}</p>
           </div>
         </a>
       ) : (

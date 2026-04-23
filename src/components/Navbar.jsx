@@ -23,20 +23,20 @@ export default function Navbar() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.6, delay: 0.1 }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled ? 'bg-bg/70 backdrop-blur-2xl border-b border-border' : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-colors duration-300 ${
+        scrolled ? 'bg-paper border-b border-ink' : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between">
-        <a href="#hero" className="text-light font-bold text-sm tracking-tight hover:text-accent transition-colors duration-200">
-          MC
+        <a href="#hero" className="text-ink font-bold text-sm tracking-tight hover:text-accent transition-colors duration-200">
+          MCJ
         </a>
 
         {/* Desktop */}
         <ul className="hidden md:flex items-center gap-10">
           {links.map((link) => (
             <li key={link.href}>
-              <a href={link.href} className="text-xs text-muted hover:text-light transition-colors duration-200 tracking-wide uppercase">
+              <a href={link.href} className="text-xs text-muted hover:text-ink transition-colors duration-200 tracking-wide uppercase">
                 {link.label}
               </a>
             </li>
@@ -44,7 +44,7 @@ export default function Navbar() {
           <li>
             <a
               href="#contact"
-              className="text-xs bg-accent text-bg font-semibold px-4 py-2 rounded-full hover:bg-accent-dim transition-colors duration-200 tracking-wide"
+              className="text-xs bg-accent text-paper font-semibold px-4 py-2 rounded-atelier-md border border-ink hover:bg-accent-dim transition-colors duration-200 tracking-wide"
             >
               Hire Me
             </a>
@@ -53,7 +53,7 @@ export default function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden text-muted hover:text-light transition-colors w-6 h-6 flex flex-col justify-center gap-1.5"
+          className="md:hidden text-muted hover:text-ink transition-colors w-6 h-6 flex flex-col justify-center gap-1.5"
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
@@ -69,14 +69,14 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-bg/95 backdrop-blur-2xl border-b border-border overflow-hidden"
+            className="md:hidden bg-paper border-b border-ink overflow-hidden"
           >
             <ul className="flex flex-col px-6 py-4 gap-5">
               {links.map((link) => (
                 <li key={link.href}>
                   <a
                     href={link.href}
-                    className="text-sm text-muted hover:text-light transition-colors uppercase tracking-wide"
+                    className="text-sm text-muted hover:text-ink transition-colors uppercase tracking-wide"
                     onClick={() => setMenuOpen(false)}
                   >
                     {link.label}

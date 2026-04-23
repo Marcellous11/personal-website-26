@@ -65,24 +65,18 @@ export default function Hero() {
 
   return (
     <section id="hero" className="min-h-screen flex flex-col justify-center relative overflow-hidden px-6 md:px-10 pt-24 pb-16">
-      {/* Background accent blob */}
-      <div
-        className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: 'radial-gradient(circle, rgba(200,255,0,0.04) 0%, transparent 65%)' }}
-      />
-
       <div className="max-w-7xl mx-auto w-full">
-        {/* Top row: availability badge + weather */}
+        {/* Top row: availability chip + weather */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
           className="flex items-center justify-between mb-16 md:mb-20"
         >
-          <div className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-            <span className="text-xs text-muted-light">Available for new projects</span>
-          </div>
+          <span className="inline-flex items-center gap-2 bg-surface border border-ink rounded-atelier-md px-2.5 py-1">
+            <span className="w-1.5 h-1.5 rounded-full bg-accent-warm" />
+            <span className="text-[10px] text-ink uppercase tracking-widest">Available for new projects</span>
+          </span>
           {weather && (
             <span className="text-xs text-muted">
               {weather.icon} {weather.city} · {weather.tempF}°F
@@ -99,10 +93,10 @@ export default function Hero() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-              className="text-display font-black text-light mb-6"
+              className="text-display font-bold text-ink mb-6"
             >
               Marcellous<br />
-              <span className="text-accent">Curtis</span>
+              <span className="text-accent">Curtis Jr.</span>
             </motion.h1>
 
             {/* Typewriter role */}
@@ -112,10 +106,10 @@ export default function Hero() {
               transition={{ delay: 0.7 }}
               className="flex items-center gap-3 mb-8"
             >
-              <span className="w-8 h-px bg-border" />
-              <span className="text-sm text-muted-light font-mono">
+              <span className="w-8 h-px bg-ink" />
+              <span className="text-sm text-muted font-mono">
                 {displayed}
-                <span className="inline-block w-px h-3.5 bg-accent ml-0.5 align-middle animate-pulse" />
+                <span className="inline-block w-[7px] h-3.5 bg-ink ml-0.5 align-middle" />
               </span>
             </motion.div>
 
@@ -124,7 +118,7 @@ export default function Hero() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.85 }}
-              className="text-muted text-base leading-relaxed max-w-lg mb-10"
+              className="text-ink text-base leading-relaxed max-w-lg mb-10"
             >
               Automation and AI Engineer with 3 years of Public Sector consulting experience.
               I leverage LLMs and RPA to eliminate manual work and build software that improves the human experience.
@@ -139,13 +133,13 @@ export default function Hero() {
             >
               <a
                 href="#projects"
-                className="px-6 py-2.5 bg-accent text-bg text-sm font-bold rounded-full hover:bg-accent-dim transition-colors duration-200"
+                className="px-6 py-2.5 bg-accent text-paper text-sm font-bold rounded-atelier-md border border-ink hover:bg-accent-dim transition-colors duration-200"
               >
                 View Work
               </a>
               <a
                 href="#contact"
-                className="px-6 py-2.5 border border-border text-muted-light text-sm rounded-full hover:border-muted hover:text-light transition-all duration-200"
+                className="px-6 py-2.5 bg-surface border border-ink text-ink text-sm rounded-atelier-md hover:bg-card transition-colors duration-200"
               >
                 Get in Touch
               </a>
@@ -160,14 +154,10 @@ export default function Hero() {
             className="flex-shrink-0 mx-auto lg:mx-0"
           >
             <div className="relative w-56 h-56 md:w-64 md:h-64 lg:w-72 lg:h-72">
-              <div
-                className="absolute inset-0 rounded-3xl"
-                style={{ background: 'linear-gradient(135deg, rgba(200,255,0,0.15) 0%, transparent 60%)' }}
-              />
               <img
                 src="/images/photo2.jpg"
                 alt="Marcellous Curtis"
-                className="w-full h-full object-cover rounded-3xl border border-border"
+                className="w-full h-full object-cover rounded-atelier-card border border-ink"
                 style={{ objectPosition: '50% 15%' }}
               />
             </div>
@@ -179,11 +169,11 @@ export default function Hero() {
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.1 }}
-          className="mt-16 pt-8 border-t border-border grid grid-cols-3 gap-6 max-w-xl"
+          className="mt-16 pt-8 border-t border-ink grid grid-cols-3 gap-6 max-w-xl"
         >
           {stats.map((s) => (
             <div key={s.label}>
-              <p className="text-xl font-bold text-light">{s.value}</p>
+              <p className="text-xl font-bold text-ink">{s.value}</p>
               <p className="text-xs text-muted mt-0.5">{s.label}</p>
             </div>
           ))}
@@ -197,11 +187,7 @@ export default function Hero() {
         transition={{ delay: 1.4 }}
         className="absolute bottom-8 right-10 hidden md:flex flex-col items-center gap-2"
       >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 2 }}
-          className="w-px h-10 bg-gradient-to-b from-transparent via-border to-transparent"
-        />
+        <span className="w-px h-10 bg-ink" />
         <span className="text-[10px] text-muted tracking-widest rotate-90 origin-center mt-2">SCROLL</span>
       </motion.div>
     </section>

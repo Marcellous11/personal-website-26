@@ -5,18 +5,18 @@ function metersToMiles(m) {
 }
 
 const COLORS = {
-  run:  '#FC4C02',
-  ride: '#60A5FA',
-  swim: '#22D3EE',
+  run:  '#FC4C02',   // Strava brand
+  ride: '#1E4CA8',   // accent ultramarine
+  swim: '#8FB5C7',   // accent-light dusty teal
 }
 
 function TooltipBox({ active, payload }) {
   if (!active || !payload?.length) return null
   const p = payload[0].payload
   return (
-    <div className="bg-bg border border-border rounded-md px-2 py-1.5 font-mono text-[9px]">
+    <div className="bg-surface border border-ink rounded-atelier-md px-2 py-1.5 font-mono text-[9px]">
       <p className="text-muted uppercase tracking-wider">{p.label}</p>
-      <p className="text-light font-semibold mt-0.5">{p.miles.toFixed(1)} mi</p>
+      <p className="text-ink font-semibold mt-0.5">{p.miles.toFixed(1)} mi</p>
       <p className="text-muted">{p.count} activities</p>
     </div>
   )
@@ -42,10 +42,10 @@ export default function SportMixChart({ ytd }) {
               dataKey="label"
               axisLine={false}
               tickLine={false}
-              tick={{ fill: '#888888', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}
+              tick={{ fill: '#5C544A', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}
             />
-            <Tooltip content={<TooltipBox />} cursor={{ fill: '#1E1E1E', opacity: 0.4 }} />
-            <Bar dataKey="miles" radius={[4, 4, 0, 0]} animationDuration={900}>
+            <Tooltip content={<TooltipBox />} cursor={{ fill: '#D0CBBE', opacity: 0.6 }} />
+            <Bar dataKey="miles" radius={[2, 2, 0, 0]} stroke="#1A1612" strokeWidth={1} animationDuration={900}>
               {data.map((d, i) => (
                 <Cell key={i} fill={d.fill} />
               ))}

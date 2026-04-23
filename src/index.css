@@ -8,41 +8,44 @@
   }
 
   body {
-    background-color: #0A0A0A;
-    color: #F0F0F0;
-    font-family: 'Inter', system-ui, sans-serif;
+    background-color: #E2DDD0;
+    color: #1A1612;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
     -webkit-font-smoothing: antialiased;
   }
 
-  /* Subtle grain overlay */
+  /* Paper grain — black dots @ multiply on cream paper.
+     Intentionally visible (spec §PaperGrain: essential to sell "paper"). */
   body::after {
     content: '';
     position: fixed;
     inset: 0;
     pointer-events: none;
     z-index: 9999;
-    opacity: 0.025;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
     background-repeat: repeat;
     background-size: 200px 200px;
   }
 
   ::selection {
-    background-color: #C8FF0030;
-    color: #C8FF00;
+    background-color: #1E4CA830;
+    color: #1A1612;
   }
 
   ::-webkit-scrollbar {
-    width: 4px;
+    width: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: #0A0A0A;
+    background: #E2DDD0;
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #2a2a2a;
-    border-radius: 4px;
+    background: #1A1612;
+    opacity: 0.4;
+    border-radius: 0;
   }
 }
 
@@ -54,6 +57,6 @@
   }
 
   .section-divider {
-    border-top: 1px solid #1E1E1E;
+    border-top: 1px solid #1A1612;
   }
 }

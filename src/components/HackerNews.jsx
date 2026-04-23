@@ -25,15 +25,15 @@ export default function HackerNews() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6 flex flex-col"
+      className="bg-surface border border-ink rounded-atelier-card p-6 flex flex-col"
     >
       <div className="flex items-center justify-between mb-5">
-        <p className="text-xs font-medium text-light">What I&apos;m Reading</p>
+        <p className="text-xs font-semibold text-ink">What I&apos;m Reading</p>
         <a
           href="https://news.ycombinator.com"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-muted hover:text-light transition-colors duration-200"
+          className="text-xs text-accent hover:text-accent-dim transition-colors duration-200"
         >
           HN →
         </a>
@@ -42,7 +42,7 @@ export default function HackerNews() {
       <div className="flex flex-col gap-px flex-1">
         {stories.length === 0
           ? Array.from({ length: TOP_N }).map((_, i) => (
-              <div key={i} className="h-12 rounded-lg animate-pulse bg-border/50 opacity-30 mb-1" />
+              <div key={i} className="h-12 bg-card border border-ink mb-1" />
             ))
           : stories.map((story, i) => (
               <a
@@ -50,11 +50,11 @@ export default function HackerNews() {
                 href={story.url || `https://news.ycombinator.com/item?id=${story.id}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-3 py-3 border-b border-border last:border-0 group hover:bg-white/[0.02] -mx-2 px-2 rounded transition-colors duration-150"
+                className="flex items-center gap-3 py-3 border-b border-ink last:border-0 group hover:bg-card -mx-2 px-2 transition-colors duration-150"
               >
                 <span className="font-mono text-[10px] text-muted w-4 shrink-0">{i + 1}</span>
                 <div className="flex-1 min-w-0">
-                  <p className="text-xs text-muted-light leading-snug line-clamp-2 group-hover:text-light transition-colors duration-150">
+                  <p className="text-xs text-ink leading-snug line-clamp-2 group-hover:text-accent transition-colors duration-150">
                     {story.title}
                   </p>
                   <p className="text-[10px] text-muted mt-0.5 font-mono">{story.score}pt · {story.by}</p>

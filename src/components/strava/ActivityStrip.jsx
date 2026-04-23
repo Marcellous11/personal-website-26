@@ -3,13 +3,15 @@ import { cn } from '@/lib/utils'
 
 const DAYS = 14
 
+// Activity fills — Run stays Strava brand orange; everything else maps to
+// the Atelier accent family.
 function typeColor(type) {
   switch (type) {
-    case 'Run':  return 'bg-[#FC4C02]'
-    case 'Ride': return 'bg-blue-400'
-    case 'Swim': return 'bg-cyan-400'
-    case 'Walk': return 'bg-green-400'
-    default:     return 'bg-[#FC4C02]'
+    case 'Run':  return '#FC4C02'          // Strava brand
+    case 'Ride': return '#1E4CA8'          // accent ultramarine
+    case 'Swim': return '#8FB5C7'          // accent-light dusty teal
+    case 'Walk': return '#D9A42A'          // accent-mustard
+    default:     return '#FC4C02'
   }
 }
 
@@ -42,10 +44,8 @@ export default function ActivityStrip({ activities = [] }) {
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: `${height}%`, opacity: 1 }}
                 transition={{ delay: i * 0.035, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                className={cn(
-                  'w-full rounded-[2px] min-h-[3px] transition-colors duration-200',
-                  active ? `${typeColor(b.dominantType)} opacity-80 hover:opacity-100` : 'bg-border/60',
-                )}
+                className={cn('w-full rounded-atelier-sm min-h-[3px] border border-ink')}
+                style={{ backgroundColor: active ? typeColor(b.dominantType) : '#D0CBBE' }}
                 title={`${b.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} — ${
                   active ? `${(b.distance / 1609.34).toFixed(2)} mi, ${b.count} activity${b.count > 1 ? 's' : ''}` : 'Rest day'
                 }`}

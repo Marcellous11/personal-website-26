@@ -39,13 +39,13 @@ export default function Timeline() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6 flex flex-col flex-1"
+      className="bg-surface border border-ink rounded-atelier-card p-6 flex flex-col flex-1"
     >
-      <p className="text-xs font-medium text-light mb-7">Career & Education</p>
+      <p className="text-xs font-semibold text-ink mb-7">Career & Education</p>
 
       <div className="relative flex flex-col">
         {/* Vertical connector line */}
-        <div className="absolute left-[4px] top-2 bottom-2 w-px bg-border" />
+        <div className="absolute left-[4px] top-2 bottom-2 w-px bg-ink" />
 
         {items.map((item, i) => (
           <motion.div
@@ -59,12 +59,12 @@ export default function Timeline() {
             {/* Dot */}
             <div className="shrink-0 mt-[5px] relative z-10">
               <div
-                className={`w-[9px] h-[9px] rounded-full border-2 ${
+                className={`w-[9px] h-[9px] rounded-full border border-ink ${
                   item.type === 'work'
                     ? item.current
-                      ? 'bg-accent border-accent'
-                      : 'bg-transparent border-accent/50'
-                    : 'bg-transparent border-border'
+                      ? 'bg-accent-warm'
+                      : 'bg-accent'
+                    : 'bg-paper'
                 }`}
               />
             </div>
@@ -72,16 +72,16 @@ export default function Timeline() {
             {/* Content */}
             <div className="flex-1 min-w-0">
               <p className="font-mono text-[10px] text-muted mb-0.5 leading-none">{item.period}</p>
-              <p className="text-sm font-medium text-light leading-snug mt-1">{item.title}</p>
-              <p className="text-xs text-muted-light mb-2">{item.org}</p>
+              <p className="text-sm font-semibold text-ink leading-snug mt-1">{item.title}</p>
+              <p className="text-xs text-muted mb-2">{item.org}</p>
               <div className="flex flex-wrap gap-1.5">
                 {item.tags.map(tag => (
                   <span
                     key={tag}
-                    className={`font-mono text-[10px] px-2 py-0.5 rounded-full border ${
+                    className={`font-mono text-[10px] px-2 py-0.5 rounded-atelier-sm border border-ink ${
                       item.current && item.type === 'work'
-                        ? 'border-accent/30 text-accent/70'
-                        : 'border-border text-muted'
+                        ? 'bg-surface text-accent'
+                        : 'bg-surface text-muted'
                     }`}
                   >
                     {tag}

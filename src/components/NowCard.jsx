@@ -15,12 +15,12 @@ export default function NowCard() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6 flex flex-col flex-1"
+      className="bg-surface border border-ink rounded-atelier-card p-6 flex flex-col flex-1"
     >
       <div className="flex items-center justify-between mb-6">
-        <p className="text-xs font-medium text-light">Now</p>
+        <p className="text-xs font-semibold text-ink">Now</p>
         <div className="flex items-center gap-1.5">
-          <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
+          <span className="w-1.5 h-1.5 rounded-full bg-accent-warm" />
           <span className="font-mono text-[10px] text-muted">live</span>
         </div>
       </div>
@@ -29,7 +29,7 @@ export default function NowCard() {
         {rows.map((row) => (
           <div key={row.label} className="flex gap-4 items-baseline">
             <span className="font-mono text-[10px] text-muted w-16 shrink-0">{row.label}</span>
-            <span className={`text-xs leading-snug ${row.accent ? 'text-accent' : 'text-muted-light'}`}>
+            <span className={`text-xs leading-snug ${row.accent ? 'text-accent' : 'text-ink'}`}>
               {row.value}
             </span>
           </div>

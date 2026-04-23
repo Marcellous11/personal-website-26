@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 const projects = [
   {
@@ -62,10 +63,10 @@ function ProjectRow({ title, category, description, tags, github, live, index })
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.5, delay: index * 0.06, ease: [0.16, 1, 0.3, 1] }}
-      className="border-b border-border"
+      className="border-b border-ink"
     >
       <button
-        className="w-full grid grid-cols-[2rem_1fr_auto] md:grid-cols-[2rem_1fr_10rem_auto] items-center gap-4 py-5 text-left group hover:bg-white/[0.02] transition-colors duration-200 px-2 -mx-2 rounded"
+        className="w-full grid grid-cols-[2rem_1fr_auto] md:grid-cols-[2rem_1fr_10rem_auto] items-center gap-4 py-5 text-left group hover:bg-surface transition-colors duration-200 px-2 -mx-2"
         onClick={() => setOpen(!open)}
       >
         {/* Number */}
@@ -74,7 +75,7 @@ function ProjectRow({ title, category, description, tags, github, live, index })
         </span>
 
         {/* Title */}
-        <span className="text-sm md:text-base font-medium text-light group-hover:text-light transition-colors">
+        <span className="text-sm md:text-base font-medium text-ink group-hover:text-ink transition-colors">
           {title}
         </span>
 
@@ -107,7 +108,7 @@ function ProjectRow({ title, category, description, tags, github, live, index })
               <div className="flex flex-col gap-4 shrink-0">
                 <div className="flex flex-wrap gap-1.5">
                   {tags.map((tag) => (
-                    <span key={tag} className="text-xs text-muted border border-border rounded-full px-2.5 py-1">
+                    <span key={tag} className="text-xs text-muted bg-surface border border-ink rounded-atelier-md px-2.5 py-1">
                       {tag}
                     </span>
                   ))}
@@ -145,20 +146,9 @@ function ProjectRow({ title, category, description, tags, github, live, index })
 
 export default function Projects() {
   return (
-    <section id="projects" className="px-6 md:px-10 py-24 bg-surface/30">
+    <section id="projects" className="px-6 md:px-10 py-24 bg-surface">
       <div className="max-w-7xl mx-auto">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-5 mb-16"
-        >
-          <span className="font-mono text-[11px] text-muted">02</span>
-          <span className="flex-1 h-px bg-border" />
-          <h2 className="text-xs font-medium text-muted uppercase tracking-widest">Work</h2>
-        </motion.div>
+        <SectionHeader number="02" title="Work" className="mb-16" />
 
         {/* Column headers */}
         <div className="grid grid-cols-[2rem_1fr_auto] md:grid-cols-[2rem_1fr_10rem_auto] gap-4 px-2 mb-2">
@@ -168,7 +158,7 @@ export default function Projects() {
           <span />
         </div>
 
-        <div className="border-t border-border">
+        <div className="border-t border-ink">
           {projects.map((p, i) => (
             <ProjectRow key={p.title} {...p} index={i} />
           ))}

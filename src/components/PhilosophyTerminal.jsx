@@ -82,13 +82,13 @@ export default function PhilosophyTerminal() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl overflow-hidden flex flex-col"
+      className="bg-card border border-ink rounded-atelier-card overflow-hidden flex flex-col"
     >
-      {/* macOS-style title bar */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-border bg-surface shrink-0">
-        <span className="w-3 h-3 rounded-full bg-[#FF5F57]" />
-        <span className="w-3 h-3 rounded-full bg-[#FEBC2E]" />
-        <span className="w-3 h-3 rounded-full bg-[#28C840]" />
+      {/* macOS-style title bar (literal reference — traffic lights stay) */}
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-ink bg-surface shrink-0">
+        <span className="w-3 h-3 rounded-full bg-[#FF5F57] border border-ink" />
+        <span className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-ink" />
+        <span className="w-3 h-3 rounded-full bg-[#28C840] border border-ink" />
         <span className="ml-3 font-mono text-[11px] text-muted">~/philosophy — zsh</span>
       </div>
 
@@ -105,9 +105,9 @@ export default function PhilosophyTerminal() {
             return (
               <div key={line.key} className="flex items-center gap-1.5 mb-1">
                 <span className="text-accent select-none">❯</span>
-                <span className="text-light">{line.text}</span>
+                <span className="text-ink">{line.text}</span>
                 {isLast && !done && (
-                  <span className="inline-block w-[5px] h-[13px] bg-accent animate-pulse ml-0.5" />
+                  <span className="inline-block w-[7px] h-[13px] bg-ink ml-0.5" />
                 )}
               </div>
             )
@@ -116,7 +116,7 @@ export default function PhilosophyTerminal() {
           return (
             <div
               key={line.key}
-              className={`pl-4 mb-0.5 ${line.dim ? 'text-muted' : 'text-muted-light'}`}
+              className={`pl-4 mb-0.5 ${line.dim ? 'text-muted' : 'text-ink'}`}
             >
               {line.text}
             </div>
@@ -126,7 +126,7 @@ export default function PhilosophyTerminal() {
         {done && (
           <div className="flex items-center gap-1.5 mt-2">
             <span className="text-accent select-none">❯</span>
-            <span className="inline-block w-[5px] h-[13px] bg-accent animate-pulse" />
+            <span className="inline-block w-[7px] h-[13px] bg-ink" />
           </div>
         )}
       </div>

@@ -14,7 +14,7 @@ export function Tabs({ value, onValueChange, className, children }) {
 export function TabsList({ className, ...props }) {
   return (
     <div
-      className={cn('inline-flex rounded-lg overflow-hidden border border-border', className)}
+      className={cn('inline-flex rounded-atelier-md overflow-hidden border border-ink bg-surface', className)}
       {...props}
     />
   )
@@ -28,7 +28,7 @@ export function TabsTrigger({ value, className, children, ...props }) {
       onClick={() => ctx?.onValueChange?.(value)}
       className={cn(
         'font-mono text-[9px] px-2.5 py-1 transition-colors duration-150',
-        active ? 'bg-accent text-bg' : 'text-muted hover:text-light',
+        active ? 'bg-accent text-paper' : 'text-muted hover:text-ink',
         className,
       )}
       {...props}

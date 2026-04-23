@@ -168,30 +168,30 @@ export default function StoicQuote() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6 flex flex-col flex-1"
+      className="bg-surface border border-ink rounded-atelier-card p-6 flex flex-col flex-1"
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
-        <p className="text-xs font-medium text-light">Daily Stoic</p>
+        <p className="text-xs font-semibold text-ink">Daily Stoic</p>
         <span className="font-mono text-[10px] text-muted">day {day}</span>
       </div>
 
       {/* Quote mark */}
-      <span className="text-4xl leading-none text-accent/30 font-serif select-none mb-2">&ldquo;</span>
+      <span className="text-4xl leading-none text-accent font-serif select-none mb-2">&ldquo;</span>
 
       {/* Quote text */}
-      <p className="text-sm text-muted-light leading-relaxed flex-1 mb-5">
+      <p className="text-sm text-ink leading-relaxed flex-1 mb-5">
         {quote.text}
       </p>
 
       {/* Author + source */}
       <div className="mb-4">
-        <p className="text-xs font-medium text-light">{quote.author}</p>
-        <p className="font-mono text-[10px] text-accent/70 mt-0.5">{quote.source}</p>
+        <p className="text-xs font-semibold text-ink">{quote.author}</p>
+        <p className="font-mono text-[10px] text-accent mt-0.5">{quote.source}</p>
       </div>
 
       {/* Divider */}
-      <div className="h-px bg-border mb-4" />
+      <div className="h-px bg-ink mb-4" />
 
       {/* Context */}
       <p className="text-[11px] text-muted leading-relaxed">

@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion'
+import SectionHeader from '@/components/ui/SectionHeader'
 
 const socials = [
   {
@@ -37,18 +38,7 @@ export default function Contact() {
   return (
     <section id="contact" className="px-6 md:px-10 py-24">
       <div className="max-w-7xl mx-auto">
-        {/* Section header */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.5 }}
-          className="flex items-center gap-5 mb-16"
-        >
-          <span className="font-mono text-[11px] text-muted">06</span>
-          <span className="flex-1 h-px bg-border" />
-          <h2 className="text-xs font-medium text-muted uppercase tracking-widest">Contact</h2>
-        </motion.div>
+        <SectionHeader number="06" title="Contact" className="mb-16" />
 
         <div className="grid md:grid-cols-2 gap-12 md:gap-20 items-start">
           {/* Left: headline */}
@@ -58,7 +48,7 @@ export default function Contact() {
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
           >
-            <h3 className="text-4xl md:text-5xl font-black text-light leading-tight tracking-tight mb-6">
+            <h3 className="text-4xl md:text-5xl font-bold text-ink leading-tight tracking-tight mb-6">
               Let&apos;s<br />
               <span className="text-accent">build</span><br />
               something.
@@ -74,7 +64,7 @@ export default function Contact() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col gap-0 border-t border-border"
+            className="flex flex-col gap-0 border-t border-ink"
           >
             {socials.map((social, i) => (
               <a
@@ -82,7 +72,7 @@ export default function Contact() {
                 href={social.href}
                 target={social.name !== 'Email' ? '_blank' : undefined}
                 rel={social.name !== 'Email' ? 'noopener noreferrer' : undefined}
-                className="flex items-center justify-between py-5 border-b border-border group hover:bg-white/[0.02] -mx-2 px-2 rounded transition-colors duration-150"
+                className="flex items-center justify-between py-5 border-b border-ink group hover:bg-surface -mx-2 px-2 transition-colors duration-150"
               >
                 <div className="flex items-center gap-3">
                   <span className="text-muted group-hover:text-accent transition-colors duration-200">
@@ -90,7 +80,7 @@ export default function Contact() {
                   </span>
                   <div>
                     <p className="text-xs font-medium text-muted uppercase tracking-wider">{social.name}</p>
-                    <p className="text-sm text-light mt-0.5">{social.label}</p>
+                    <p className="text-sm text-ink mt-0.5">{social.label}</p>
                   </div>
                 </div>
                 <svg
@@ -111,16 +101,16 @@ export default function Contact() {
           transition={{ delay: 0.4 }}
           className="mt-20 flex flex-col sm:flex-row items-center justify-between gap-3"
         >
-          <p className="text-[11px] text-muted/40 font-mono">
+          <p className="text-[11px] text-muted font-mono">
             © {new Date().getFullYear()} Marcellous Curtis Jr · React + Vite + Tailwind · Cloudflare
           </p>
           <a
             href="https://claude.ai"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-1.5 text-[11px] text-muted/40 hover:text-muted transition-colors duration-200 font-mono group"
+            className="flex items-center gap-1.5 text-[11px] text-muted hover:text-ink transition-colors duration-200 font-mono group"
           >
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-accent/40 group-hover:text-accent transition-colors duration-200">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" className="text-accent group-hover:text-accent-warm transition-colors duration-200">
               <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10S17.523 2 12 2zm0 2c4.418 0 8 3.582 8 8s-3.582 8-8 8-8-3.582-8-8 3.582-8 8-8zm-.5 3v5.5l4.5 2.5-.75-1.3-3.25-1.9V7h-1z" />
             </svg>
             Powered by Claude AI

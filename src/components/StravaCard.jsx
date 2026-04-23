@@ -120,30 +120,20 @@ function ActivityIcon({ type, className = '' }) {
   }
 }
 
-function activityColor(type) {
+function activityHex(type) {
   switch (type) {
-    case 'Run':  return 'text-[#FC4C02]'
-    case 'Ride': return 'text-blue-400'
-    case 'Swim': return 'text-cyan-400'
-    case 'Walk': return 'text-green-400'
-    default:     return 'text-[#FC4C02]'
-  }
-}
-
-function activityBg(type) {
-  switch (type) {
-    case 'Run':  return 'bg-[#FC4C02]/10'
-    case 'Ride': return 'bg-blue-400/10'
-    case 'Swim': return 'bg-cyan-400/10'
-    case 'Walk': return 'bg-green-400/10'
-    default:     return 'bg-[#FC4C02]/10'
+    case 'Run':  return '#FC4C02'   // Strava brand
+    case 'Ride': return '#1E4CA8'   // accent
+    case 'Swim': return '#8FB5C7'   // accent-light
+    case 'Walk': return '#D9A42A'   // accent-mustard
+    default:     return '#FC4C02'
   }
 }
 
 // ── Skeleton ────────────────────────────────────────────────────────────────
 
 function Skeleton({ className = '' }) {
-  return <div className={cn('bg-border/40 rounded-lg animate-pulse', className)} />
+  return <div className={cn('bg-card border border-ink rounded-atelier-md', className)} />
 }
 
 // ── Streak helper ───────────────────────────────────────────────────────────
@@ -212,12 +202,12 @@ export default function StravaCard() {
           <svg width="14" height="14" viewBox="0 0 24 24" fill="#FC4C02">
             <path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0 4.096 13.77h4.17" />
           </svg>
-          <span className="text-xs font-medium text-light">Strava</span>
+          <span className="text-xs font-semibold text-ink">Strava</span>
           {data?.athlete?.city && (
             <span className="font-mono text-[10px] text-muted">· {data.athlete.city}</span>
           )}
           {streak > 0 && (
-            <span className="ml-1 font-mono text-[9px] text-[#FC4C02] bg-[#FC4C02]/10 rounded px-1.5 py-0.5 uppercase tracking-wider">
+            <span className="ml-1 font-mono text-[9px] text-[#FC4C02] bg-surface border border-ink rounded-atelier-sm px-1.5 py-0.5 uppercase tracking-wider">
               {streak}d streak
             </span>
           )}
@@ -251,17 +241,20 @@ export default function StravaCard() {
             <div className="flex items-start justify-between mb-3">
               <div>
                 <p className="font-mono text-[9px] text-muted uppercase tracking-widest mb-1">Latest Activity</p>
-                <p className="text-sm font-semibold text-light leading-snug">{latest?.name ?? '—'}</p>
+                <p className="text-sm font-semibold text-ink leading-snug">{latest?.name ?? '—'}</p>
                 <p className="text-[10px] text-muted mt-0.5">{latest ? relDate(latest.startDate) : ''}</p>
               </div>
-              <div className={cn('p-2 rounded-lg', activityBg(latest?.type))}>
-                <ActivityIcon type={latest?.type} className={cn('w-5 h-5', activityColor(latest?.type))} />
+              <div
+                className="p-2 rounded-atelier-md border border-ink"
+                style={{ backgroundColor: activityHex(latest?.type) }}
+              >
+                <ActivityIcon type={latest?.type} className="w-5 h-5 text-paper" />
               </div>
             </div>
 
             {/* Big distance */}
             <div className="my-3 flex items-end gap-1.5">
-              <span className="text-[2.4rem] font-bold text-light leading-none tracking-tight">
+              <span className="text-[2.4rem] font-bold text-ink leading-none tracking-tight">
                 {latest ? (
                   <AnimatedNumber value={heroValue} decimals={heroDecimal} />
                 ) : '—'}
@@ -295,16 +288,19 @@ export default function StravaCard() {
                     : '—',
                 },
               ].map(({ label, value }) => (
-                <div key={label} className="bg-bg rounded-lg p-3 flex flex-col justify-center relative overflow-hidden">
-                  <div className={cn('absolute left-0 top-0 bottom-0 w-[2px] opacity-60 bg-current', activityColor(latest?.type))} />
+                <div key={label} className="bg-surface border border-ink rounded-atelier-md p-3 flex flex-col justify-center relative overflow-hidden">
+                  <div
+                    className="absolute left-0 top-0 bottom-0 w-[3px]"
+                    style={{ backgroundColor: activityHex(latest?.type) }}
+                  />
                   <p className="font-mono text-[8px] text-muted uppercase tracking-widest">{label}</p>
-                  <p className="text-base font-bold text-light mt-1 leading-none tracking-tight">{value}</p>
+                  <p className="text-base font-bold text-ink mt-1 leading-none tracking-tight">{value}</p>
                 </div>
               ))}
             </div>
 
             {/* 14-day activity strip */}
-            <div className="mt-4 pt-4 border-t border-border">
+            <div className="mt-4 pt-4 border-t border-ink">
               <ActivityStrip activities={data?.recentActivities ?? []} />
             </div>
           </CardInner>
@@ -330,19 +326,19 @@ export default function StravaCard() {
                 <p className="font-mono text-[8px] text-muted">{ytd?.count ?? 0} activities</p>
               </div>
               <div className="flex items-end gap-1.5 mt-1">
-                <span className="text-2xl font-bold text-light leading-none tracking-tight">
+                <span className="text-2xl font-bold text-ink leading-none tracking-tight">
                   <AnimatedNumber value={ytdValue} decimals={ytdDecimal} />
                 </span>
                 <span className="text-xs text-muted mb-0.5">{ytdUnit}</span>
               </div>
               <div className="grid grid-cols-2 gap-2 mt-3">
-                <div className="bg-bg rounded-lg p-2">
+                <div className="bg-surface border border-ink rounded-atelier-md p-2">
                   <p className="font-mono text-[8px] text-muted uppercase tracking-widest">Time</p>
-                  <p className="text-xs font-semibold text-light mt-1">{fmtTimeLong(ytd?.movingTime ?? 0)}</p>
+                  <p className="text-xs font-semibold text-ink mt-1">{fmtTimeLong(ytd?.movingTime ?? 0)}</p>
                 </div>
-                <div className="bg-bg rounded-lg p-2">
+                <div className="bg-surface border border-ink rounded-atelier-md p-2">
                   <p className="font-mono text-[8px] text-muted uppercase tracking-widest">Elevation</p>
-                  <p className="text-xs font-semibold text-light mt-1">
+                  <p className="text-xs font-semibold text-ink mt-1">
                     <AnimatedNumber value={metersToFeet(ytd?.elevationGain ?? 0)} /> ft
                   </p>
                 </div>
@@ -354,7 +350,7 @@ export default function StravaCard() {
               <SportMixChart ytd={data?.ytd} />
             </div>
 
-            <div className="h-px bg-border my-1" />
+            <div className="h-px bg-ink my-1" />
 
             {/* Recent 4-week block */}
             <div className="mt-3 mb-4">
@@ -365,28 +361,28 @@ export default function StravaCard() {
                   { label: tab === 'swim' ? 'yd' : 'mi', value: tab === 'swim' ? Math.round(metersToYards(recent?.distance ?? 0)) : metersToMiles(recent?.distance ?? 0).toFixed(2) },
                   { label: 'time', value: fmtTime(recent?.movingTime ?? 0) },
                 ].map(({ label, value }) => (
-                  <div key={label} className="bg-bg rounded-lg p-2 text-center">
-                    <p className="text-xs font-bold text-light">{value}</p>
+                  <div key={label} className="bg-surface border border-ink rounded-atelier-md p-2 text-center">
+                    <p className="text-xs font-bold text-ink">{value}</p>
                     <p className="font-mono text-[8px] text-muted mt-0.5">{label}</p>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div className="h-px bg-border my-1" />
+            <div className="h-px bg-ink my-1" />
 
             {/* All-time */}
             <div className="mt-3">
               <p className="font-mono text-[8px] text-muted uppercase tracking-widest mb-3">All Time</p>
               <div className="flex items-center justify-between">
                 <span className="text-[10px] text-muted">Activities</span>
-                <span className="text-xs font-semibold text-light">
+                <span className="text-xs font-semibold text-ink">
                   <AnimatedNumber value={allT?.count ?? 0} />
                 </span>
               </div>
               <div className="flex items-center justify-between mt-2">
                 <span className="text-[10px] text-muted">Distance</span>
-                <span className="text-xs font-semibold text-light">
+                <span className="text-xs font-semibold text-ink">
                   {tab === 'swim'
                     ? <><AnimatedNumber value={metersToYards(allT?.distance ?? 0)} /> yd</>
                     : <><AnimatedNumber value={metersToMiles(allT?.distance ?? 0)} /> mi</>}
@@ -409,21 +405,24 @@ export default function StravaCard() {
                     initial={{ opacity: 0, x: 6 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.04, duration: 0.3 }}
-                    className="flex items-center gap-3 py-2 border-b border-border/50 last:border-0 group hover:bg-bg/60 rounded-md px-2 -mx-2 transition-colors"
+                    className="flex items-center gap-3 py-2 border-b border-ink last:border-0 group hover:bg-surface px-2 -mx-2 transition-colors"
                   >
-                    <div className={cn('p-1.5 rounded-lg shrink-0', activityBg(act.type))}>
-                      <ActivityIcon type={act.type} className={cn('w-3.5 h-3.5', activityColor(act.type))} />
+                    <div
+                      className="p-1.5 rounded-atelier-md shrink-0 border border-ink"
+                      style={{ backgroundColor: activityHex(act.type) }}
+                    >
+                      <ActivityIcon type={act.type} className="w-3.5 h-3.5 text-paper" />
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <p className="text-[11px] font-medium text-light truncate leading-tight">{act.name}</p>
+                      <p className="text-[11px] font-medium text-ink truncate leading-tight">{act.name}</p>
                       <p className="font-mono text-[9px] text-muted mt-0.5 flex items-center gap-1.5">
                         <span>{act.type === 'Swim' ? `${Math.round(metersToYards(act.distance))} yd` : `${metersToMiles(act.distance).toFixed(2)} mi`}</span>
-                        <span className="text-border">·</span>
+                        <span className="text-muted">·</span>
                         <span>{fmtTime(act.movingTime)}</span>
                         {act.totalElevationGain > 0 && (
                           <>
-                            <span className="text-border">·</span>
+                            <span className="text-muted">·</span>
                             <span>↑{Math.round(metersToFeet(act.totalElevationGain))}ft</span>
                           </>
                         )}

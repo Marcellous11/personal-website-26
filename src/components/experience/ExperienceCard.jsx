@@ -19,8 +19,8 @@ function BarTooltip({ active, payload }) {
   if (!active || !payload?.length) return null
   const p = payload[0].payload
   return (
-    <div className="bg-bg border border-border rounded-md px-2 py-1.5 font-mono text-[9px]">
-      <p className="text-light font-semibold">{p.name}</p>
+    <div className="bg-surface border border-ink rounded-atelier-md px-2 py-1.5 font-mono text-[9px]">
+      <p className="text-ink font-semibold">{p.name}</p>
       <p className="text-muted mt-0.5">{p.display}</p>
     </div>
   )
@@ -32,7 +32,7 @@ function ProjectImpactChart({ projects, metricLabel = 'hours' }) {
     short: p.short ?? p.name,
     value: p.value,
     display: p.display ?? `${p.value.toLocaleString()} ${metricLabel}`,
-    fill: p.color ?? '#C8FF00',
+    fill: p.color ?? '#1E4CA8',
   }))
 
   return (
@@ -46,10 +46,10 @@ function ProjectImpactChart({ projects, metricLabel = 'hours' }) {
             axisLine={false}
             tickLine={false}
             width={110}
-            tick={{ fill: '#888888', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}
+            tick={{ fill: '#5C544A', fontSize: 9, fontFamily: 'JetBrains Mono, monospace' }}
           />
-          <Tooltip content={<BarTooltip />} cursor={{ fill: '#1E1E1E', opacity: 0.4 }} />
-          <Bar dataKey="value" radius={[0, 4, 4, 0]} animationDuration={900}>
+          <Tooltip content={<BarTooltip />} cursor={{ fill: '#D0CBBE', opacity: 0.6 }} />
+          <Bar dataKey="value" radius={[0, 2, 2, 0]} stroke="#1A1612" strokeWidth={1} animationDuration={900}>
             {data.map((d, i) => (
               <Cell key={i} fill={d.fill} />
             ))}
@@ -64,8 +64,8 @@ function DonutTooltip({ active, payload }) {
   if (!active || !payload?.length) return null
   const p = payload[0].payload
   return (
-    <div className="bg-bg border border-border rounded-md px-2 py-1.5 font-mono text-[9px]">
-      <p className="text-light font-semibold">{p.label}</p>
+    <div className="bg-surface border border-ink rounded-atelier-md px-2 py-1.5 font-mono text-[9px]">
+      <p className="text-ink font-semibold">{p.label}</p>
       <p className="text-muted mt-0.5">{p.value}%</p>
     </div>
   )
@@ -84,7 +84,8 @@ function TechMixDonut({ items }) {
               nameKey="label"
               innerRadius={26}
               outerRadius={42}
-              stroke="none"
+              stroke="#1A1612"
+              strokeWidth={1}
               animationDuration={900}
             >
               {items.map((d, i) => (
@@ -97,8 +98,11 @@ function TechMixDonut({ items }) {
       <div className="flex-1 flex flex-col gap-1.5">
         {items.map(item => (
           <div key={item.label} className="flex items-center gap-2">
-            <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ backgroundColor: item.color }} />
-            <span className="text-[10px] text-muted-light flex-1 truncate">{item.label}</span>
+            <span
+              className="w-2 h-2 shrink-0 border border-ink"
+              style={{ backgroundColor: item.color }}
+            />
+            <span className="text-[10px] text-ink flex-1 truncate">{item.label}</span>
             <span className="font-mono text-[9px] text-muted">{item.value}%</span>
           </div>
         ))}
@@ -114,35 +118,35 @@ export default function ExperienceCard({ role, index = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6"
+      className="bg-surface border border-ink rounded-atelier-card p-6"
     >
       {/* Header */}
       <div className="flex items-start justify-between mb-4">
         <div>
           <div className="flex items-center gap-2 flex-wrap">
-            <h3 className="text-base font-bold text-light">{role.title}</h3>
+            <h3 className="text-base font-bold text-ink">{role.title}</h3>
             {role.current && <Badge variant="accent">Current</Badge>}
           </div>
-          <p className="text-xs text-muted-light mt-1">{role.company}</p>
+          <p className="text-xs text-muted mt-1">{role.company}</p>
         </div>
         <p className="font-mono text-[10px] text-muted shrink-0 pt-1">{role.period}</p>
       </div>
 
-      <p className="text-xs text-muted-light leading-relaxed mb-5 max-w-3xl">{role.summary}</p>
+      <p className="text-xs text-ink leading-relaxed mb-5 max-w-3xl">{role.summary}</p>
 
       {/* Dashboard grid */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.4fr] gap-4">
-        {/* Left: hero + stats */}
+        {/* Left: hero + stats — single accent-warm focal (one-per-screen rule) */}
         <CardInner className="p-4 flex flex-col">
           <p className="font-mono text-[8px] text-muted uppercase tracking-widest mb-2">
             {role.hero.label}
           </p>
           <div className="flex items-baseline gap-2 mb-4">
-            <span className="text-4xl font-bold text-accent leading-none tracking-tight">
+            <span className="text-4xl font-bold text-accent-warm leading-none tracking-tight">
               <AnimatedNumber value={role.hero.value} />
             </span>
             {role.hero.suffix && (
-              <span className="text-lg text-accent-dim font-semibold">{role.hero.suffix}</span>
+              <span className="text-lg text-accent-warm font-bold">{role.hero.suffix}</span>
             )}
             {role.hero.unit && (
               <span className="text-xs text-muted mb-0.5">{role.hero.unit}</span>
@@ -153,11 +157,11 @@ export default function ExperienceCard({ role, index = 0 }) {
             {role.stats.map(s => (
               <div
                 key={s.label}
-                className="bg-bg rounded-lg p-2.5 relative overflow-hidden"
+                className="bg-surface border border-ink rounded-atelier-md p-2.5 relative overflow-hidden"
               >
-                <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-accent opacity-60" />
-                <p className="font-mono text-[8px] text-muted uppercase tracking-widest">{s.label}</p>
-                <p className="text-sm font-bold text-light mt-1 leading-none tracking-tight">{s.value}</p>
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-accent" />
+                <p className="font-mono text-[8px] text-muted uppercase tracking-widest pl-2">{s.label}</p>
+                <p className="text-sm font-bold text-ink mt-1 leading-none tracking-tight pl-2">{s.value}</p>
               </div>
             ))}
           </div>
@@ -171,7 +175,7 @@ export default function ExperienceCard({ role, index = 0 }) {
           <ProjectImpactChart projects={role.projects} metricLabel={role.metricLabel} />
 
           {!role.hideTechMix && (
-            <div className="mt-3 pt-3 border-t border-border">
+            <div className="mt-3 pt-3 border-t border-ink">
               <p className="font-mono text-[8px] text-muted uppercase tracking-widest mb-2">Tech Mix</p>
               <TechMixDonut items={role.techMix} />
             </div>

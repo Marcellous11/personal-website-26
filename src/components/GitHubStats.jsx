@@ -3,12 +3,14 @@ import { motion } from 'framer-motion'
 
 const GITHUB_USER = 'Marcellous11'
 
+// Atelier colored-tile ramp: paperDeep → ultramarine. Each cell is a
+// solid fill with an ink hairline — no tints per spec §Flat fills.
 const LEVEL_COLORS = [
-  'bg-border',
-  'bg-accent/20',
-  'bg-accent/40',
-  'bg-accent/65',
-  'bg-accent',
+  { bg: '#D0CBBE' }, // paperDeep (no activity)
+  { bg: '#BBC7DC' }, // lightest ultramarine (mixed w/ paper)
+  { bg: '#7A95C5' },
+  { bg: '#4A74B8' },
+  { bg: '#1E4CA8' }, // full accent
 ]
 
 function buildWeeks(contributions) {
@@ -55,11 +57,11 @@ export default function GitHubStats() {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-      className="bg-card border border-border rounded-2xl p-6"
+      className="bg-surface border border-ink rounded-atelier-card p-6"
     >
       <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
         <div>
-          <p className="text-xs font-medium text-light">GitHub Activity</p>
+          <p className="text-xs font-semibold text-ink">GitHub Activity</p>
           {total !== null && (
             <p className="text-[11px] text-muted mt-0.5">{total.toLocaleString()} contributions this year</p>
           )}
@@ -92,11 +94,13 @@ export default function GitHubStats() {
                 {weeks.map((week, wi) => {
                   const cell = week[day]
                   if (!cell) return <div key={wi} className="w-[10px] h-[10px]" />
+                  const level = LEVEL_COLORS[cell.level ?? 0]
                   return (
                     <div
                       key={wi}
                       title={`${cell.date}: ${cell.count} contribution${cell.count !== 1 ? 's' : ''}`}
-                      className={`w-[10px] h-[10px] rounded-[2px] ${LEVEL_COLORS[cell.level ?? 0]}`}
+                      className="w-[10px] h-[10px] rounded-atelier-sm border border-ink"
+                      style={{ backgroundColor: level.bg }}
                     />
                   )
                 })}
@@ -106,14 +110,18 @@ export default function GitHubStats() {
         </div>
       ) : (
         <div className="h-20 flex items-center justify-center">
-          <span className="text-xs text-muted animate-pulse">Loading…</span>
+          <span className="text-xs text-muted">Loading…</span>
         </div>
       )}
 
       <div className="flex items-center gap-1.5 mt-3 justify-end">
         <span className="text-[9px] text-muted">Less</span>
-        {LEVEL_COLORS.map((cls, i) => (
-          <div key={i} className={`w-[9px] h-[9px] rounded-[2px] ${cls}`} />
+        {LEVEL_COLORS.map((level, i) => (
+          <div
+            key={i}
+            className="w-[9px] h-[9px] rounded-atelier-sm border border-ink"
+            style={{ backgroundColor: level.bg }}
+          />
         ))}
         <span className="text-[9px] text-muted">More</span>
       </div>
