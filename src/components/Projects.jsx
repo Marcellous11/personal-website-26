@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import SectionHeader from '@/components/ui/SectionHeader'
+import FeaturedWork from '@/components/FeaturedWork'
 
 const projects = [
   {
@@ -149,6 +150,8 @@ export default function Projects() {
     <section id="projects" className="px-6 md:px-10 py-24 bg-surface">
       <div className="max-w-7xl mx-auto">
         <SectionHeader number="02" title="Work" className="mb-16" />
+
+        <FeaturedWork />
 
         {/* Column headers */}
         <div className="grid grid-cols-[2rem_1fr_auto] md:grid-cols-[2rem_1fr_10rem_auto] gap-4 px-2 mb-2">
