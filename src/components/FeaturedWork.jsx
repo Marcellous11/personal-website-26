@@ -11,8 +11,8 @@ const featured = [
       'Registration + check-in platform for the U.S. Southwest Area Women’s Conference. Next.js 16 on Vercel, Neon Postgres, QR-coded confirmation emails via Resend, and a full accessibility flow — built to scale for a ~3,000-person event.',
     tags: ['Next.js 16', 'Postgres', 'Resend', 'Tailwind'],
     image: '/work/womens-conference.jpg',
-    live: 'https://saw-womens-conference.vercel.app',
-    github: 'https://github.com/Marcellous11/womensConference',
+    live: 'https://www.usswawomensconference.com/en',
+    github: null,
   },
   {
     title: 'Invoke CRM',
