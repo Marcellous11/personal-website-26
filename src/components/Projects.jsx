@@ -147,7 +147,7 @@ function ProjectRow({ title, category, description, tags, github, live, index })
 
 export default function Projects() {
   return (
-    <section id="projects" className="px-6 md:px-10 py-24 bg-surface">
+    <section id="projects" className="px-6 md:px-10 py-16 bg-surface">
       <div className="max-w-7xl mx-auto">
         <SectionHeader number="02" title="Work" className="mb-16" />
 

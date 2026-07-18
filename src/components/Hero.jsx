@@ -1,16 +1,6 @@
 import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 
-function wmoIcon(code) {
-  if (code === 0) return '☀️'
-  if (code <= 3) return '⛅'
-  if (code <= 48) return '🌫️'
-  if (code <= 67) return '🌧️'
-  if (code <= 77) return '❄️'
-  if (code <= 82) return '🌦️'
-  return '⛈️'
-}
-
 const titles = [
   'Automation + AI Engineer',
   'Full Stack Developer',
@@ -28,24 +18,6 @@ export default function Hero() {
   const [titleIndex, setTitleIndex] = useState(0)
   const [displayed, setDisplayed] = useState('')
   const [deleting, setDeleting] = useState(false)
-  const [weather, setWeather] = useState(null)
-
-  useEffect(() => {
-    async function fetchWeather(lat, lon) {
-      const [meteo, geo] = await Promise.all([
-        fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`).then(r => r.json()),
-        fetch(`https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=en`).then(r => r.json()),
-      ])
-      const city = geo.city || geo.locality || geo.principalSubdivision || 'Your City'
-      const tempF = Math.round(meteo.current_weather.temperature * 9 / 5 + 32)
-      const icon = wmoIcon(meteo.current_weather.weathercode)
-      setWeather({ city, tempF, icon })
-    }
-    navigator.geolocation.getCurrentPosition(
-      ({ coords }) => fetchWeather(coords.latitude, coords.longitude),
-      () => fetchWeather(38.9072, -77.0369),
-    )
-  }, [])
 
   useEffect(() => {
     const current = titles[titleIndex]
@@ -66,22 +38,17 @@ export default function Hero() {
   return (
     <section id="hero" className="min-h-screen flex flex-col justify-center relative overflow-hidden px-6 md:px-10 pt-24 pb-16">
       <div className="max-w-7xl mx-auto w-full">
-        {/* Top row: availability chip + weather */}
+        {/* Top row: availability chip */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="flex items-center justify-between mb-16 md:mb-20"
+          className="flex items-center mb-12 md:mb-14"
         >
           <span className="inline-flex items-center gap-2 bg-surface border border-ink rounded-atelier-md px-2.5 py-1">
             <span className="w-1.5 h-1.5 rounded-full bg-accent-warm" />
             <span className="text-[10px] text-ink uppercase tracking-widest">Available for new projects</span>
           </span>
-          {weather && (
-            <span className="text-xs text-muted">
-              {weather.icon} {weather.city} · {weather.tempF}°F
-            </span>
-          )}
         </motion.div>
 
         {/* Main hero grid */}

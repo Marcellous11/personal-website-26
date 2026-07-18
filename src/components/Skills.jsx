@@ -18,7 +18,7 @@ const groups = [
 
 export default function Skills() {
   return (
-    <section id="skills" className="px-6 md:px-10 py-24">
+    <section id="skills" className="px-6 md:px-10 py-16">
       <div className="max-w-7xl mx-auto">
         <SectionHeader number="01" title="Skills & Tools" className="mb-16" />
 

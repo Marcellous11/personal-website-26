@@ -62,7 +62,7 @@ const roles = [
 
 export default function Experience() {
   return (
-    <section className="px-6 md:px-10 py-24" id="experience">
+    <section className="px-6 md:px-10 py-16" id="experience">
       <div className="max-w-7xl mx-auto">
         <SectionHeader number="03" title="Experience" className="mb-10" />
 
