@@ -12,12 +12,11 @@ export default function IntroSplash({ onComplete }) {
 
   useEffect(() => {
     const reduce = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
-    const seen = sessionStorage.getItem('mcj_intro_seen')
-    if (reduce || seen) {
+    if (reduce) {
       onComplete?.()
       return
     }
-    sessionStorage.setItem('mcj_intro_seen', '1')
+    // Plays on every load / refresh (he likes it).
     setShow(true)
     document.body.style.overflow = 'hidden'
     const t = setTimeout(() => finish(), 2100)
