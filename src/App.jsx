@@ -13,19 +13,13 @@ import Contact from './components/Contact'
 import SectionHeader from './components/ui/SectionHeader'
 import IntroSplash from './components/IntroSplash'
 import VisitGreeting from './components/VisitGreeting'
-import BackgroundFX from './components/BackgroundFX'
-import BackgroundToggle from './components/BackgroundToggle'
 import { useState } from 'react'
 
 export default function App() {
   const [introDone, setIntroDone] = useState(false)
-  const [bg, setBg] = useState(() => localStorage.getItem('mcj_bg') || 'flow')
-  const setBgPersist = v => { setBg(v); localStorage.setItem('mcj_bg', v) }
 
   return (
-    <div className="min-h-screen text-ink">
-      <BackgroundFX variant={bg} />
-      <BackgroundToggle value={bg} onChange={setBgPersist} />
+    <div className="min-h-screen bg-paper text-ink">
       <IntroSplash onComplete={() => setIntroDone(true)} />
       {introDone && <VisitGreeting delay={400} />}
       <Navbar />
