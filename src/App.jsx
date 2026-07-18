@@ -12,10 +12,17 @@ import PhilosophyTerminal from './components/PhilosophyTerminal'
 import Timeline from './components/Timeline'
 import Contact from './components/Contact'
 import SectionHeader from './components/ui/SectionHeader'
+import IntroSplash from './components/IntroSplash'
+import VisitGreeting from './components/VisitGreeting'
+import { useState } from 'react'
 
 export default function App() {
+  const [introDone, setIntroDone] = useState(false)
+
   return (
     <div className="min-h-screen bg-paper text-ink">
+      <IntroSplash onComplete={() => setIntroDone(true)} />
+      {introDone && <VisitGreeting delay={400} />}
       <Navbar />
       <main>
         <Hero />
