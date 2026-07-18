@@ -23,7 +23,7 @@ export default function App() {
   const setBgPersist = v => { setBg(v); localStorage.setItem('mcj_bg', v) }
 
   return (
-    <div className="min-h-screen bg-paper text-ink">
+    <div className="min-h-screen text-ink">
       <BackgroundFX variant={bg} />
       <BackgroundToggle value={bg} onChange={setBgPersist} />
       <IntroSplash onComplete={() => setIntroDone(true)} />
