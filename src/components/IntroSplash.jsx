@@ -76,7 +76,7 @@ export default function IntroSplash({ onComplete }) {
             animate={{ opacity: 1 }}
             transition={{ delay: 1.25, duration: 0.4 }}
           >
-            Marcellous Curtis
+            Marcellous Curtis Jr
           </motion.p>
 
           <motion.span
